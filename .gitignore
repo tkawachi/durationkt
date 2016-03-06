@@ -1,0 +1,15 @@
+### https://raw.github.com/github/gitignore/87bd07e50dd98527131a1f310b4e4915a5364cd7/gradle.gitignore
+
+.gradle
+build/
+
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# Cache of project
+.gradletasknamecache
+
+
