@@ -43,6 +43,10 @@ class Duration(val length: Long, val unit: TimeUnit) {
         return result
     }
 
+    private fun unitString(): String = timeUnitName[unit] + (if (length == 1L) "" else "s")
+
+    override fun toString(): String = "$length ${unitString()}"
+
     companion object {
         fun safeAdd(a: Long, b: Long): Long {
             if ((b > 0) && (a > Long.MAX_VALUE - b) ||
@@ -61,6 +65,16 @@ class Duration(val length: Long, val unit: TimeUnit) {
             if (product < 0) throw IllegalArgumentException("multiplication overflow")
             return if ((a == _a) xor (b == _b)) -product else product
         }
+
+        private val timeUnitName = hashMapOf(
+                NANOSECONDS to "nanosecond",
+                MICROSECONDS to "microsecond",
+                MILLISECONDS to "millisecond",
+                SECONDS to "second",
+                MINUTES to "minute",
+                HOURS to "hour",
+                DAYS to "day"
+        )
     }
 }
 
