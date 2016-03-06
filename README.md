@@ -5,6 +5,14 @@ It's greatly inspired by scala.concurrent.duration.FiniteDuration.
 
 ## Usage
 
+Add dependencies to `build.gradle`.
+
+```gradle
+dependencies {
+    compile "com.github.tkawachi:durationkt:0.0.1"
+}
+```
+
 ```kotlin
 import com.github.tkawachi.durationkt.*
 
