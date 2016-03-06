@@ -150,6 +150,7 @@ class DurationTest {
     fun testToString() {
         assertEquals("1 second", 1.second.toString())
         assertEquals("2 seconds", 2.seconds.toString())
+        assertEquals("61 seconds", (1.minute + 1.second).toString())
     }
 
     @Test
