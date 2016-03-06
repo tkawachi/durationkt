@@ -168,6 +168,13 @@ class DurationTest {
     }
 
     @Test
+    fun testTimes() {
+        val d = 20.seconds * 3
+        assertEquals(60, d.length)
+        assertEquals(SECONDS, d.unit)
+    }
+
+    @Test
     fun testUnaryMinus() {
         assertEquals(Duration(-3L, SECONDS), -3.seconds)
     }

@@ -2,7 +2,7 @@ package com.github.tkawachi.durationkt
 
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeUnit.*
-
+import java.lang.Long.numberOfLeadingZeros
 
 class Duration(val length: Long, val unit: TimeUnit) {
     fun toNanos(): Long = unit.toNanos(length)
@@ -27,6 +27,8 @@ class Duration(val length: Long, val unit: TimeUnit) {
 
     operator fun minus(other: Duration): Duration = plus(-other)
 
+    operator fun times(factor: Long): Duration = Duration(safeMul(length, factor), unit)
+
     operator fun compareTo(other: Duration): Int = toNanos().compareTo(other.toNanos())
 
     operator override fun equals(other: Any?): Boolean =
@@ -48,6 +50,16 @@ class Duration(val length: Long, val unit: TimeUnit) {
                 throw IllegalArgumentException("integer overflow")
             }
             return a + b
+        }
+
+        fun safeMul(_a: Long, _b: Long): Long {
+            val a = Math.abs(_a)
+            val b = Math.abs(_b)
+            if (numberOfLeadingZeros(a) + numberOfLeadingZeros(b) < 64)
+                throw IllegalArgumentException("multiplication overflow")
+            val product = a * b
+            if (product < 0) throw IllegalArgumentException("multiplication overflow")
+            return if ((a == _a) xor (b == _b)) -product else product
         }
     }
 }
