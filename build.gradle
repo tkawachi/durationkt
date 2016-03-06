@@ -1,5 +1,5 @@
 group 'com.github.tkawachi'
-version '0.0.1'
+version '0.0.2-SNAPSHOT'
 
 buildscript {
     ext.kotlin_version = '1.0.0'
