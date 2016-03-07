@@ -24,6 +24,8 @@ import com.github.tkawachi.durationkt.*
 
 1.second * 10 // -> Duration(10, TimeUnit.SECONDS)
 
+1.minute / 1.5 // -> Duration(40, TimeUnit.SECONDS)
+
 1.minute - 1.second // -> Duration(59, TimeUnit.SECONDS)
 
 1.second.toMillis() // -> 1000L

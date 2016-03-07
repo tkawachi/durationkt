@@ -1,8 +1,8 @@
 package com.github.tkawachi.durationkt
 
+import java.lang.Long.numberOfLeadingZeros
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeUnit.*
-import java.lang.Long.numberOfLeadingZeros
 
 class Duration(val length: Long, val unit: TimeUnit) {
     fun toNanos(): Long = unit.toNanos(length)
@@ -29,6 +29,10 @@ class Duration(val length: Long, val unit: TimeUnit) {
 
     operator fun times(factor: Long): Duration = Duration(safeMul(length, factor), unit)
 
+    operator fun div(divisor: Double): Duration = fromNanos((toNanos() / divisor).toLong())
+
+    operator fun div(divisor: Long): Duration = fromNanos(toNanos() / divisor)
+
     operator fun compareTo(other: Duration): Int = toNanos().compareTo(other.toNanos())
 
     operator override fun equals(other: Any?): Boolean =
@@ -48,7 +52,7 @@ class Duration(val length: Long, val unit: TimeUnit) {
     override fun toString(): String = "$length ${unitString()}"
 
     companion object {
-        fun safeAdd(a: Long, b: Long): Long {
+        private fun safeAdd(a: Long, b: Long): Long {
             if ((b > 0) && (a > Long.MAX_VALUE - b) ||
                     (b < 0) && (a < Long.MIN_VALUE - b)) {
                 throw IllegalArgumentException("integer overflow")
@@ -56,7 +60,7 @@ class Duration(val length: Long, val unit: TimeUnit) {
             return a + b
         }
 
-        fun safeMul(_a: Long, _b: Long): Long {
+        private fun safeMul(_a: Long, _b: Long): Long {
             val a = Math.abs(_a)
             val b = Math.abs(_b)
             if (numberOfLeadingZeros(a) + numberOfLeadingZeros(b) < 64)
@@ -75,6 +79,22 @@ class Duration(val length: Long, val unit: TimeUnit) {
                 HOURS to "hour",
                 DAYS to "day"
         )
+
+        private val us_per_ns = 1000L
+        private val ms_per_ns = us_per_ns * 1000L
+        private val s_per_ns = ms_per_ns * 1000L
+        private val min_per_ns = s_per_ns * 60L
+        private val h_per_ns = min_per_ns * 60L
+        private val d_per_ns = h_per_ns * 24L
+
+        fun fromNanos(nanos: Long): Duration =
+                if (nanos % d_per_ns == 0L) Duration(nanos / d_per_ns, DAYS)
+                else if (nanos % h_per_ns == 0L) Duration(nanos / h_per_ns, HOURS)
+                else if (nanos % min_per_ns == 0L) Duration(nanos / min_per_ns, MINUTES)
+                else if (nanos % s_per_ns == 0L) Duration(nanos / s_per_ns, SECONDS)
+                else if (nanos % ms_per_ns == 0L) Duration(nanos / ms_per_ns, MILLISECONDS)
+                else if (nanos % us_per_ns == 0L) Duration(nanos / us_per_ns, MICROSECONDS)
+                else Duration(nanos, NANOSECONDS)
     }
 }
 

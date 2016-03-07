@@ -46,6 +46,21 @@ class DurationTest {
     }
 
     @Test
+    fun testFromNanos() {
+        assertEquals(2, Duration.fromNanos(2000L).length)
+        assertEquals(MICROSECONDS, Duration.fromNanos(2000L).unit)
+
+        assertEquals(2, Duration.fromNanos(2000000L).length)
+        assertEquals(MILLISECONDS, Duration.fromNanos(2000000L).unit)
+
+        assertEquals(2, Duration.fromNanos(2000000000L).length)
+        assertEquals(SECONDS, Duration.fromNanos(2000000000L).unit)
+
+        assertEquals(2000000001L, Duration.fromNanos(2000000001L).length)
+        assertEquals(NANOSECONDS, Duration.fromNanos(2000000001L).unit)
+    }
+
+    @Test
     fun testLongNanoExt() {
         assertEquals(Duration(3L, NANOSECONDS), 3L.nano)
         assertEquals(Duration(3L, NANOSECONDS), 3L.nanos)
@@ -179,6 +194,15 @@ class DurationTest {
         val d = 20.seconds * 3
         assertEquals(60, d.length)
         assertEquals(SECONDS, d.unit)
+    }
+
+    @Test
+    fun testDiv() {
+        val d = 1.minute / 3
+        assertEquals(20.seconds, d)
+
+        val d2 = 1.minute / 1.5
+        assertEquals(40.seconds, d2)
     }
 
     @Test
