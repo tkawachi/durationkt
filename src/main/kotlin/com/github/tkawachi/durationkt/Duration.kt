@@ -52,6 +52,8 @@ class Duration(val length: Long, val unit: TimeUnit) {
     override fun toString(): String = "$length ${unitString()}"
 
     companion object {
+        val zero: Duration = Duration(0L, NANOSECONDS)
+
         private fun safeAdd(a: Long, b: Long): Long {
             if ((b > 0) && (a > Long.MAX_VALUE - b) ||
                     (b < 0) && (a < Long.MIN_VALUE - b)) {
