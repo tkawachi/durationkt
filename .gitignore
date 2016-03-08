@@ -13,3 +13,5 @@ gradle-app.setting
 .gradletasknamecache
 
 /gradle.properties
+
+local.properties
